@@ -3,16 +3,17 @@ const negValues = [1, 2, 3, 4, 5];
 
 const posTray = document.getElementById("posTray");
 const negTray = document.getElementById("negTray");
-const posBag = document.getElementById("posBag");
-const negBag = document.getElementById("negBag");
+const posOrb = document.getElementById("posOrb");
+const negOrb = document.getElementById("negOrb");
 const posCountEl = document.getElementById("posCount");
 const negCountEl = document.getElementById("negCount");
 const netEl = document.getElementById("net");
+const marker = document.getElementById("marker");
+const line = document.querySelector(".number-line");
 
 let posSum = 0;
 let negSum = 0;
 
-// Create coin elements
 function makeCoin(value, sign) {
   const coin = document.createElement("div");
   coin.className = "coin " + (sign === "pos" ? "positive" : "negative");
@@ -24,19 +25,32 @@ function makeCoin(value, sign) {
   return coin;
 }
 
-// Add coins to trays
 posValues.forEach((v) => posTray.appendChild(makeCoin(v, "pos")));
 negValues.forEach((v) => negTray.appendChild(makeCoin(v, "neg")));
 
 function updateUI() {
   posCountEl.textContent = posSum;
   negCountEl.textContent = negSum;
-  netEl.textContent = posSum - negSum;
+  const total = posSum - negSum;
+  netEl.textContent = total;
+
+  // update number line marker
+  const max = 15;
+  const min = -15;
+  const percent = (total - min) / (max - min);
+  const x = percent * line.clientWidth;
+  marker.style.left = `${x}px`;
+  marker.textContent = total;
+
+  // color of marker
+  if (total > 0) marker.style.color = "#2e8b2e";
+  else if (total < 0) marker.style.color = "#c92424";
+  else marker.style.color = "#333";
 }
 
-function animateToBag(fromEl, bagEl, onComplete) {
+function animateToOrb(fromEl, orbEl, onComplete) {
   const start = fromEl.getBoundingClientRect();
-  const end = bagEl.getBoundingClientRect();
+  const end = orbEl.getBoundingClientRect();
 
   const clone = fromEl.cloneNode(true);
   clone.classList.add("floating");
@@ -44,10 +58,7 @@ function animateToBag(fromEl, bagEl, onComplete) {
   clone.style.top = start.top + "px";
   clone.style.width = start.width + "px";
   clone.style.height = start.height + "px";
-  clone.style.transform = "translate(0,0) scale(1)";
   document.body.appendChild(clone);
-
-  // trigger animation
   void clone.offsetWidth;
 
   const tx = end.left + end.width / 2 - start.width / 2;
@@ -57,7 +68,7 @@ function animateToBag(fromEl, bagEl, onComplete) {
     clone.style.left = tx + "px";
     clone.style.top = ty + "px";
     clone.style.transform = "scale(0.6)";
-    clone.style.opacity = "0.95";
+    clone.style.opacity = "0.9";
   });
 
   setTimeout(() => {
@@ -120,18 +131,18 @@ function setupPointerDrag(el) {
     const p = getPointerPos(ev);
     const dropX = p.x,
       dropY = p.y;
-    const bags = [posBag, negBag];
-    let droppedBag = null;
+    const orbs = [posOrb, negOrb];
+    let droppedOrb = null;
 
-    for (const b of bags) {
-      const r = b.getBoundingClientRect();
+    for (const o of orbs) {
+      const r = o.getBoundingClientRect();
       if (
         dropX >= r.left &&
         dropX <= r.right &&
         dropY >= r.top &&
         dropY <= r.bottom
       ) {
-        droppedBag = b;
+        droppedOrb = o;
         break;
       }
     }
@@ -139,10 +150,10 @@ function setupPointerDrag(el) {
     const sign = el.dataset.sign;
     const value = Number(el.dataset.val);
 
-    if (droppedBag) {
-      animateToBag(floating, droppedBag, () => {
-        if (droppedBag === posBag && sign === "pos") posSum += value;
-        if (droppedBag === negBag && sign === "neg") negSum += value;
+    if (droppedOrb) {
+      animateToOrb(floating, droppedOrb, () => {
+        if (droppedOrb === posOrb && sign === "pos") posSum += value;
+        if (droppedOrb === negOrb && sign === "neg") negSum += value;
         updateUI();
       });
     } else {
@@ -154,15 +165,6 @@ function setupPointerDrag(el) {
   }
 
   el.addEventListener("pointerdown", startPointer);
-  el.addEventListener("keydown", (ev) => {
-    if (ev.key === "Enter") {
-      const sign = el.dataset.sign;
-      const value = Number(el.dataset.val);
-      if (sign === "pos") posSum += value;
-      else negSum += value;
-      updateUI();
-    }
-  });
 }
 
 updateUI();

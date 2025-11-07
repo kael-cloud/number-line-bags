@@ -3,41 +3,47 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Number Line Bags</title>
+    <title>Energy Orbs Number Line</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Drag the coins into the bags — Positives vs Negatives</h1>
+    <h1>Drag the energy coins into the orbs</h1>
+
+    <!-- Number line -->
+    <div class="number-line">
+      <div id="marker">0</div>
+    </div>
 
     <div class="row">
+      <!-- Negatives on the left -->
       <div class="panel">
-        <div class="tray" id="posTray" aria-label="positive coins"></div>
-        <div class="tray-label">Positives (yellow)</div>
+        <div class="tray" id="negTray"></div>
+        <div class="tray-label">Negative Energy (red)</div>
       </div>
 
-      <div class="bags">
-        <div class="bag" id="negBag" data-type="neg">
-          <div class="bag-label">Negatives</div>
+      <!-- Orbs in the center -->
+      <div class="orbs">
+        <div class="orb negative" id="negOrb">
           <div class="count" id="negCount">0</div>
+          <div class="orb-label">Negative Orb</div>
         </div>
 
-        <div class="bag" id="posBag" data-type="pos">
-          <div class="bag-label">Positives</div>
+        <div class="orb positive" id="posOrb">
           <div class="count" id="posCount">0</div>
+          <div class="orb-label">Positive Orb</div>
         </div>
       </div>
 
+      <!-- Positives on the right -->
       <div class="panel">
-        <div class="tray" id="negTray" aria-label="negative coins"></div>
-        <div class="tray-label">Negatives (red)</div>
+        <div class="tray" id="posTray"></div>
+        <div class="tray-label">Positive Energy (green)</div>
       </div>
     </div>
 
     <div class="controls">
-      <div id="totalBox">Net Total: <span id="net">0</span></div>
-      <div class="tip">
-        Tip: drag or tap a coin then drop it onto either bag.
-      </div>
+      <div id="totalBox">Net Energy: <span id="net">0</span></div>
+      <div class="tip">Tip: drag or tap a coin then drop it onto an orb.</div>
     </div>
 
     <script src="script.js"></script>
