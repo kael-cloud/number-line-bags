@@ -7,43 +7,38 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Drag the energy coins into the orbs</h1>
+    <h1>Energy Orbs Number Line</h1>
 
     <!-- Number line -->
-    <div class="number-line">
-      <div id="marker">0</div>
-    </div>
+    <canvas id="numberLine" width="900" height="200"></canvas>
 
     <div class="row">
-      <!-- Negatives on the left -->
-      <div class="panel">
-        <div class="tray" id="negTray"></div>
-        <div class="tray-label">Negative Energy (red)</div>
+      <div class="tray-panel">
+        <div id="negTray" class="tray"></div>
+        <div class="tray-label">Negative Numbers</div>
       </div>
 
-      <!-- Orbs in the center -->
-      <div class="orbs">
-        <div class="orb negative" id="negOrb">
+      <div class="bags">
+        <div id="negOrb" class="bag">
+          <div class="bag-label">Negative Orb</div>
           <div class="count" id="negCount">0</div>
-          <div class="orb-label">Negative Orb</div>
         </div>
 
-        <div class="orb positive" id="posOrb">
+        <div id="posOrb" class="bag">
+          <div class="bag-label">Positive Orb</div>
           <div class="count" id="posCount">0</div>
-          <div class="orb-label">Positive Orb</div>
         </div>
       </div>
 
-      <!-- Positives on the right -->
-      <div class="panel">
-        <div class="tray" id="posTray"></div>
-        <div class="tray-label">Positive Energy (green)</div>
+      <div class="tray-panel">
+        <div id="posTray" class="tray"></div>
+        <div class="tray-label">Positive Numbers</div>
       </div>
     </div>
 
     <div class="controls">
-      <div id="totalBox">Net Energy: <span id="net">0</span></div>
-      <div class="tip">Tip: drag or tap a coin then drop it onto an orb.</div>
+      <div id="totalBox">Sum: <span id="net">0</span></div>
+      <button id="resetBtn">Reset</button>
     </div>
 
     <script src="script.js"></script>
