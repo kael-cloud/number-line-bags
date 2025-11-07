@@ -1,0 +1,165 @@
+:root {
+  --bag-w: 260px;
+  --bag-h: 170px;
+  --coin-size: 48px;
+  --gap: 12px;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  margin: 18px;
+  background: #fbfbfd;
+  color: #222;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  margin: 0 0 14px;
+  font-size: 18px;
+  text-align: center;
+}
+
+.row {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 980px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.bags {
+  display: flex;
+  gap: 40px;
+  align-items: flex-end;
+}
+
+.bag {
+  width: var(--bag-w);
+  height: var(--bag-h);
+  border-radius: 18px;
+  background: linear-gradient(#efebe8, #e0d9d2);
+  box-shadow: 0 6px 14px rgba(30, 30, 40, 0.12);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bag-label {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 4px 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  font-weight: 600;
+}
+
+.bag .count {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.06);
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.tray {
+  width: 360px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 3px 10px rgba(40, 40, 50, 0.04);
+}
+
+.tray-label {
+  font-size: 13px;
+  color: #444;
+  margin-top: 6px;
+}
+
+.coin {
+  width: var(--coin-size);
+  height: var(--coin-size);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  cursor: grab;
+  user-select: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+  position: relative;
+  transition: transform 0.12s ease;
+}
+
+.coin:active {
+  cursor: grabbing;
+  transform: scale(0.98);
+}
+
+.coin.positive {
+  background: linear-gradient(#ffd84d, #ffc107);
+  color: #0a0a06;
+}
+
+.coin.negative {
+  background: linear-gradient(#ff6b6b, #d64545);
+  color: #fff;
+}
+
+.controls {
+  text-align: center;
+  margin-top: 14px;
+}
+
+#totalBox {
+  background: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+  font-weight: 700;
+}
+
+.tip {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #555;
+}
+
+.floating {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1), left 0.35s,
+    top 0.35s, opacity 0.2s;
+}
+
+@media (max-width: 760px) {
+  :root {
+    --bag-w: 180px;
+    --bag-h: 140px;
+    --coin-size: 40px;
+  }
+
+  .tray {
+    width: 100%;
+  }
+}

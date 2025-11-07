@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Number Line Bags</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Drag the coins into the bags — Positives vs Negatives</h1>
+
+    <div class="row">
+      <div class="panel">
+        <div class="tray" id="posTray" aria-label="positive coins"></div>
+        <div class="tray-label">Positives (yellow)</div>
+      </div>
+
+      <div class="bags">
+        <div class="bag" id="negBag" data-type="neg">
+          <div class="bag-label">Negatives</div>
+          <div class="count" id="negCount">0</div>
+        </div>
+
+        <div class="bag" id="posBag" data-type="pos">
+          <div class="bag-label">Positives</div>
+          <div class="count" id="posCount">0</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="tray" id="negTray" aria-label="negative coins"></div>
+        <div class="tray-label">Negatives (red)</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div id="totalBox">Net Total: <span id="net">0</span></div>
+      <div class="tip">
+        Tip: drag or tap a coin then drop it onto either bag.
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
