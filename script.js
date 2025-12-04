@@ -50,22 +50,21 @@ function updateUI() {
 
 // ------------------ APPLY OPERATION ------------------
 function applyOperation(value) {
-  if (activeOperation === "+") {
-    netTotal += value;
-  }
-
-  if (activeOperation === "-") {
-    netTotal -= value;
-  }
-
-  if (activeOperation === "x") {
-    netTotal = netTotal === 0 ? value : netTotal * value;
-  }
-
-  if (activeOperation === "÷") {
-    if (value !== 0) {
-      netTotal = netTotal === 0 ? value : netTotal / value;
-    }
+  switch (activeOperation) {
+    case "+":
+      netTotal += value;
+      break;
+    case "-":
+      netTotal -= value;
+      break;
+    case "x":
+      netTotal = netTotal === 0 ? value : netTotal * value;
+      break;
+    case "÷":
+      if (value !== 0) {
+        netTotal = netTotal === 0 ? value : netTotal / value;
+      }
+      break;
   }
 }
 
@@ -180,6 +179,11 @@ resetBtn.addEventListener("click", () => {
   netTotal = 0;
   droppedNumbers = [];
   lastTwo = [];
+
+  // Reset active operation to addition for safe start
+  activeOperation = "+";
+  opBtns.forEach((b) => b.classList.remove("active"));
+  document.querySelector('.op[data-op="+"]').classList.add("active");
 
   updateUI();
 });
