@@ -138,6 +138,7 @@ h1 {
   font-weight: 700;
 }
 
+/* RESET BUTTON */
 button {
   margin-top: 10px;
   padding: 8px 16px;
@@ -153,27 +154,7 @@ button:hover {
   background: #f0f0f0;
 }
 
-/* ===== OPERATION BUTTONS ===== */
-.operations {
-  display: flex;
-  gap: 10px;
-  margin-top: 14px;
-}
-
-.op {
-  width: 50px;
-  height: 44px;
-  font-size: 20px;
-  font-weight: 800;
-}
-
-.op.active {
-  background: #2196f3;
-  color: #fff;
-  border-color: #1976d2;
-}
-
-/* CANVAS */
+/* CANVAS (Port Area) */
 canvas {
   border: 1px solid #ccc;
   margin-bottom: 20px;
