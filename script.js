@@ -17,7 +17,7 @@ let netTotal = 0;
 let droppedNumbers = [];
 let lastTwo = [];
 
-let activeOperation = "+"; // DEFAULT OPERATION
+let activeOperation = "+"; // ✅ DEFAULT OPERATION
 
 // ------------------ CREATE NUMBERS ------------------
 function makeNumber(value, sign) {
@@ -48,23 +48,23 @@ function updateUI() {
   netEl.textContent = netTotal;
 }
 
-// ------------------ APPLY OPERATION (FIXED) ------------------
+// ------------------ APPLY OPERATION ------------------
 function applyOperation(value) {
   if (activeOperation === "+") {
-    netTotal = netTotal + value;
+    netTotal += value;
   }
 
   if (activeOperation === "-") {
-    netTotal = netTotal - value;
+    netTotal -= value;
   }
 
   if (activeOperation === "x") {
-    netTotal = netTotal * value;
+    netTotal = netTotal === 0 ? value : netTotal * value;
   }
 
   if (activeOperation === "÷") {
     if (value !== 0) {
-      netTotal = netTotal / value;
+      netTotal = netTotal === 0 ? value : netTotal / value;
     }
   }
 }
