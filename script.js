@@ -3,8 +3,7 @@ const negValues = [1, 2, 3, 4, 5];
 
 const posTray = document.getElementById("posTray");
 const negTray = document.getElementById("negTray");
-const posOrb = document.getElementById("posOrb");
-const negOrb = document.getElementById("negOrb");
+const centralBoat = document.getElementById("centralBoat");
 const posCountEl = document.getElementById("posCount");
 const negCountEl = document.getElementById("negCount");
 const netEl = document.getElementById("net");
@@ -13,8 +12,12 @@ const ctx = canvas.getContext("2d");
 
 let posSum = 0;
 let negSum = 0;
+let netTotal = 0;
+
 let droppedNumbers = [];
 let lastTwo = [];
+
+let activeOperation = "+"; // ✅ DEFAULT OPERATION
 
 // ------------------ CREATE NUMBERS ------------------
 function makeNumber(value, sign) {
@@ -40,12 +43,33 @@ negValues.forEach((v) => negTray.appendChild(makeNumber(v, "neg")));
 
 // ------------------ UPDATE UI ------------------
 function updateUI() {
-  posCountEl.textContent = posSum;
-  negCountEl.textContent = negSum;
-  netEl.textContent = posSum - negSum;
+  posCountEl.textContent = "Pos: " + posSum;
+  negCountEl.textContent = "Neg: " + negSum;
+  netEl.textContent = netTotal;
 }
 
-// ------------------ NUMBER LINE ------------------
+// ------------------ APPLY OPERATION ------------------
+function applyOperation(value) {
+  if (activeOperation === "+") {
+    netTotal += value;
+  }
+
+  if (activeOperation === "-") {
+    netTotal -= value;
+  }
+
+  if (activeOperation === "x") {
+    netTotal = netTotal === 0 ? value : netTotal * value;
+  }
+
+  if (activeOperation === "÷") {
+    if (value !== 0) {
+      netTotal = netTotal === 0 ? value : netTotal / value;
+    }
+  }
+}
+
+// ------------------ DRAW NUMBER LINE ------------------
 function updateNumberLine() {
   const width = canvas.width;
   const height = canvas.height;
@@ -58,14 +82,17 @@ function updateNumberLine() {
 
   ctx.clearRect(0, 0, width, height);
 
+  ctx.fillStyle = "#89c4ff";
+  ctx.fillRect(0, midY + 30, width, height - midY);
+
   ctx.beginPath();
   ctx.moveTo(startX, midY);
   ctx.lineTo(endX, midY);
-  ctx.strokeStyle = "#444";
-  ctx.lineWidth = 2;
+  ctx.strokeStyle = "#333";
+  ctx.lineWidth = 3;
   ctx.stroke();
 
-  ctx.fillStyle = "#222";
+  ctx.fillStyle = "#111";
   ctx.textAlign = "center";
   ctx.font = "14px Arial";
   for (let i = min; i <= max; i++) {
@@ -77,14 +104,20 @@ function updateNumberLine() {
     ctx.fillText(i, x, midY + 25);
   }
 
-  droppedNumbers.forEach((val) => {
+  droppedNumbers.forEach((val, idx) => {
     const x = startX + (val - min) * step;
+    const y = midY - 10 + Math.sin(Date.now() / 300 + idx) * 3;
+
     ctx.beginPath();
-    ctx.arc(x, midY, 6, 0, 2 * Math.PI);
+    ctx.moveTo(x - 10, y);
+    ctx.lineTo(x + 10, y);
+    ctx.lineTo(x + 15, y + 8);
+    ctx.lineTo(x - 15, y + 8);
+    ctx.closePath();
+
     ctx.fillStyle = val < 0 ? "#d64545" : "#4caf50";
     ctx.fill();
     ctx.strokeStyle = "#222";
-    ctx.lineWidth = 1;
     ctx.stroke();
   });
 
@@ -92,11 +125,10 @@ function updateNumberLine() {
     const x1 = startX + (lastTwo[0] - min) * step;
     const x2 = startX + (lastTwo[1] - min) * step;
     const y = midY;
-    const distance = Math.abs(x2 - x1);
-    const maxCurveHeight = 40;
-    let cpY = y - Math.min(distance / 2, maxCurveHeight);
-    if (x1 === x2) cpY = y - 10;
+
     const cpX = (x1 + x2) / 2;
+    const cpY = y - 40;
+
     ctx.beginPath();
     ctx.moveTo(x1, y);
     ctx.quadraticCurveTo(cpX, cpY, x2, y);
@@ -104,34 +136,52 @@ function updateNumberLine() {
     ctx.lineWidth = 3;
     ctx.stroke();
   }
+
+  requestAnimationFrame(updateNumberLine);
 }
 
-// ------------------ ORB DROP LOGIC ------------------
-[posOrb, negOrb].forEach((orb) => {
-  orb.addEventListener("dragover", (e) => e.preventDefault());
-  orb.addEventListener("drop", (e) => {
-    e.preventDefault();
-    const value = Number(e.dataTransfer.getData("text/plain"));
-    if (value > 0) posSum += value;
-    else negSum += -value;
-    updateUI();
+// ------------------ DROP LOGIC ------------------
+centralBoat.addEventListener("dragover", (e) => e.preventDefault());
 
-    droppedNumbers.push(value);
-    lastTwo.push(value);
-    if (lastTwo.length > 2) lastTwo.shift();
-    updateNumberLine();
+centralBoat.addEventListener("drop", (e) => {
+  e.preventDefault();
+  const value = Number(e.dataTransfer.getData("text/plain"));
+
+  if (value > 0) posSum += value;
+  else negSum += -value;
+
+  applyOperation(value);
+
+  droppedNumbers.push(value);
+  lastTwo.push(value);
+  if (lastTwo.length > 2) lastTwo.shift();
+
+  updateUI();
+});
+
+// ------------------ OPERATION BUTTONS ------------------
+const opBtns = document.querySelectorAll(".op");
+
+opBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    opBtns.forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    activeOperation = btn.dataset.op;
   });
 });
 
-// ------------------ RESET BUTTON ------------------
+// ------------------ RESET ------------------
 const resetBtn = document.getElementById("resetBtn");
+
 resetBtn.addEventListener("click", () => {
   posSum = 0;
   negSum = 0;
+  netTotal = 0;
   droppedNumbers = [];
   lastTwo = [];
+
   updateUI();
-  updateNumberLine();
 });
 
 updateUI();

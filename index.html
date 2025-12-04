@@ -3,42 +3,46 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Energy Orbs Number Line</title>
+    <title>Energy Boats Number Line</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Energy Orbs Number Line</h1>
+    <h1>Energy Boats — Port of Positives and Negatives</h1>
 
-    <!-- Number line -->
+    <!-- Number line (Port) -->
     <canvas id="numberLine" width="900" height="200"></canvas>
 
     <div class="row">
       <div class="tray-panel">
         <div id="negTray" class="tray"></div>
-        <div class="tray-label">Negative Numbers</div>
+        <div class="tray-label">Negative Numbers (Red)</div>
       </div>
 
-      <div class="bags">
-        <div id="negOrb" class="bag">
-          <div class="bag-label">Negative Orb</div>
-          <div class="count" id="negCount">0</div>
-        </div>
-
-        <div id="posOrb" class="bag">
-          <div class="bag-label">Positive Orb</div>
-          <div class="count" id="posCount">0</div>
+      <div class="boats">
+        <div id="centralBoat" class="boat">
+          <div class="boat-label">Nasipit Port</div>
+          <div class="count" id="posCount">Pos: 0</div>
+          <div class="count" id="negCount" style="bottom: -40px">Neg: 0</div>
         </div>
       </div>
 
       <div class="tray-panel">
         <div id="posTray" class="tray"></div>
-        <div class="tray-label">Positive Numbers</div>
+        <div class="tray-label">Positive Numbers (Green)</div>
       </div>
     </div>
 
     <div class="controls">
-      <div id="totalBox">Sum: <span id="net">0</span></div>
+      <div id="totalBox">Net Total: <span id="net">0</span></div>
       <button id="resetBtn">Reset</button>
+    </div>
+
+    <!-- OPERATION BUTTONS -->
+    <div class="operations">
+      <button class="op active" data-op="+">+</button>
+      <button class="op" data-op="-">−</button>
+      <button class="op" data-op="x">×</button>
+      <button class="op" data-op="÷">÷</button>
     </div>
 
     <script src="script.js"></script>

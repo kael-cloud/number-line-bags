@@ -1,6 +1,6 @@
 :root {
-  --bag-w: 180px;
-  --bag-h: 140px;
+  --boat-w: 180px;
+  --boat-h: 100px;
   --coin-size: 40px;
   --gap: 12px;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -8,7 +8,7 @@
 
 body {
   margin: 18px;
-  background: #fbfbfd;
+  background: linear-gradient(to bottom, #cde7f2, #eaf6ff);
   color: #222;
   display: flex;
   flex-direction: column;
@@ -21,6 +21,7 @@ h1 {
   text-align: center;
 }
 
+/* ============= TRAY AND LAYOUT ============= */
 .row {
   display: flex;
   gap: 24px;
@@ -36,58 +37,6 @@ h1 {
   flex-direction: column;
   gap: 10px;
   align-items: center;
-}
-
-.bags {
-  display: flex;
-  gap: 40px;
-  align-items: center;
-}
-
-.bag {
-  width: var(--bag-w);
-  height: var(--bag-h);
-  border-radius: 50%;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(6px);
-  box-shadow: inset 0 -10px 20px rgba(0, 0, 0, 0.25),
-    inset 0 10px 20px rgba(255, 255, 255, 0.3), 0 8px 15px rgba(0, 0, 0, 0.3);
-}
-
-/* Negative orb glassy red */
-#negOrb.bag {
-  background: linear-gradient(
-    145deg,
-    rgba(215, 69, 69, 0.7),
-    rgba(165, 42, 42, 0.7)
-  );
-}
-
-/* Positive orb glassy green */
-#posOrb.bag {
-  background: linear-gradient(
-    145deg,
-    rgba(76, 175, 80, 0.7),
-    rgba(46, 125, 50, 0.7)
-  );
-}
-
-/* Label at bottom outside the orb */
-.bag .count {
-  position: absolute;
-  bottom: -28px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-weight: 700;
-  color: #222;
-  background: transparent;
-  padding: 0;
-  box-shadow: none;
-  border-radius: 0;
 }
 
 .tray {
@@ -108,6 +57,37 @@ h1 {
   margin-top: 6px;
 }
 
+/* ============= CENTRAL DOCK BOAT ============= */
+.boats {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.boat {
+  width: var(--boat-w);
+  height: var(--boat-h);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  border-radius: 12px;
+  background: url("images/port.jpg") center/cover no-repeat;
+  box-shadow: inset 0 -10px 20px rgba(0, 0, 0, 0.25),
+    0 8px 15px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+/* Count positions */
+.boat .count {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: 700;
+  color: #222;
+}
+
+/* ============= COINS / BOAT CARGO ============= */
 .coin {
   width: var(--coin-size);
   height: var(--coin-size);
@@ -118,27 +98,33 @@ h1 {
   font-weight: 700;
   cursor: grab;
   user-select: none;
+  position: relative;
   box-shadow: inset 0 -3px 8px rgba(0, 0, 0, 0.3),
     inset 0 3px 8px rgba(255, 255, 255, 0.3), 0 4px 6px rgba(0, 0, 0, 0.25);
-  position: relative;
   transition: transform 0.12s ease;
+  background-size: cover;
+  background-position: center;
+  color: #000000;
+  overflow: hidden;
 }
 
-.coin:active {
-  cursor: grabbing;
-  transform: scale(0.98);
+.coin::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 1);
+  opacity: 0.1;
 }
 
 .coin.positive {
-  background: linear-gradient(145deg, #2e7d32, #4caf50);
-  color: #fff;
+  background-image: url("images/green.jpg");
 }
 
 .coin.negative {
-  background: linear-gradient(145deg, #a52a2a, #d64545);
-  color: #fff;
+  background-image: url("images/red.jpg");
 }
 
+/* ============= CONTROLS ============= */
 .controls {
   text-align: center;
   margin-top: 14px;
@@ -152,7 +138,6 @@ h1 {
   font-weight: 700;
 }
 
-/* ------------------ SIMPLE RESET BUTTON ------------------ */
 button {
   margin-top: 10px;
   padding: 8px 16px;
@@ -168,20 +153,42 @@ button:hover {
   background: #f0f0f0;
 }
 
-@media (max-width: 760px) {
-  :root {
-    --bag-w: 140px;
-    --bag-h: 120px;
-    --coin-size: 36px;
-  }
-
-  .tray {
-    width: 100%;
-  }
+/* ===== OPERATION BUTTONS ===== */
+.operations {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
 }
 
+.op {
+  width: 50px;
+  height: 44px;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.op.active {
+  background: #2196f3;
+  color: #fff;
+  border-color: #1976d2;
+}
+
+/* CANVAS */
 canvas {
   border: 1px solid #ccc;
   margin-bottom: 20px;
-  background: #fff;
+  background: linear-gradient(to bottom, #b3e0ff 0%, #eaf6ff 100%);
+  box-shadow: inset 0 -3px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* RESPONSIVE */
+@media (max-width: 760px) {
+  :root {
+    --boat-w: 140px;
+    --boat-h: 80px;
+    --coin-size: 36px;
+  }
+  .tray {
+    width: 100%;
+  }
 }
